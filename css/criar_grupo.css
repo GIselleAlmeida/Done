@@ -1,0 +1,27 @@
+/* Moving things down a bit */
+
+
+/* Adding some color to the remove button */
+
+span.glyphicon-remove {
+  color: #AA0000;
+}
+
+/* Make first remove button grey */
+
+div.col-sm-2:first-child span.glyphicon-remove {
+  color: #eeeeee;
+}
+
+/* Spacing things out a bit */
+
+span.glyphicon-plus {
+  padding-right: 3px;
+}
+
+
+/* Removing the default underline */
+
+.btn-link:hover {
+  text-decoration: none;
+}
