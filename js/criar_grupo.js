@@ -1,16 +1,17 @@
+var numGrupo = 1;
+
 var target = $("div#target");
 var n = function() {
   return $("div.col-xs-2").length;
 };
 var newInput = function() {
+  numGrupo++;
+
   var div = $("<div/>", {
     "class": "input-group"
   });
   var input = $("<input>", {
-    "class": "form-control" ,"placeholder": "username"
-  });
-  var input1 = $("<input>", {
-    "class": "form-control" ,"placeholder": "nome"
+    "class": "form-control" ,"placeholder": "email", "name": "email"+numGrupo.toString()
   });
   var span = $("<span/>", {
     "class": "input-group-btn"
@@ -33,7 +34,6 @@ var newInput = function() {
   $(glyph).appendTo(button);
   $(button).appendTo(span);
   $(input).appendTo(div);
-   $(input1).appendTo(div);
   $(span).appendTo(div);
   $(div).appendTo(col);
   return col;
