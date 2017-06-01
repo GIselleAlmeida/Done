@@ -24,7 +24,7 @@ function loadSemaforo() {
     if (this.readyState == 4 && this.status == 200) {
     		response = this.responseText;
     		if (response != "randori-oficial.php") {
-    			console.log("if");
+    			//console.log("if");
     			document.getElementById("msg").innerHTML = response;
     		} else {
     			console.log(response);
