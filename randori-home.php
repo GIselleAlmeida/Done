@@ -10,20 +10,84 @@ if ( $_SESSION["email"] != null
   	
   	$email = $_SESSION["email"];
   	$pdo = new PDO($database_conexao, $database_username, $database_senha);
-  	if (!getSemaforoProfessor($email, $pdo)) {
+  	
+    if (!getSemaforoProfessor($email, $pdo)) {
   		echo "Aguarde o professor liberar o experimento";
   	} else if (!getSemaforoGrupo($email, $pdo)) {
   		echo "Aguarde os demais alunos do grupo iniciarem Randori";
   	} else {
-    //echo $_SESSION["username"];
-    /*$html_string = file_get_contents("randori.html");
-    $html = str_replace('<a href="logout.php">logout</a>', '<a href="logout.php">logout ('.$_SESSION["username"].')</a>', $html_string);
-    echo $html;*/
-      //header("location:randori-oficial.php"); 		
+
+      if(setPiloto($email, $pdo));
+      else if (setCopiloto($email, $pdo));    
+ 		  //else  
   	 echo "randori-oficial.php";
     }
 } else {
     header("location:login.php");
+}
+
+function setPiloto($email, $pdo) {
+  $query = "SELECT * FROM grupo_randori WHERE grupo_randori.nome = (SELECT user.fk_grupo_randori FROM user WHERE EMAIL=:email)";
+ 
+  $statement = $pdo->prepare($query);
+  $statement->bindValue(":email",$email);
+  $statement->execute();
+  $grupo = $statement->fetch(\PDO::FETCH_ASSOC);
+  
+  if ($grupo["piloto"] == NULL) {
+    $query = "SELECT * FROM user WHERE EMAIL=:email"; 
+    $statement = $pdo->prepare($query);
+    $statement->bindValue(":email",$email);
+    $statement->execute();
+    $user = $statement->fetch(\PDO::FETCH_ASSOC);
+    if ($user["flag_piloto"] == 0){
+      $query = "UPDATE grupo_randori SET piloto = :email WHERE nome = :nome_grupo";
+      $statement = $pdo->prepare($query);
+      $statement->bindValue(":email",$email);
+      $statement->bindValue(":nome_grupo",$grupo["nome"]);      
+      $statement->execute();
+
+      $query = "UPDATE user SET flag_piloto = 1 WHERE email = :email";
+      $statement = $pdo->prepare($query);
+      $statement->bindValue(":email",$email);      
+      $statement->execute();
+      return True;
+    }
+    return False;
+  }
+  else return False;
+}
+
+function setCopiloto($email, $pdo) {
+  $query = "SELECT * FROM grupo_randori WHERE grupo_randori.nome = (SELECT user.fk_grupo_randori FROM user WHERE EMAIL=:email)";
+ 
+  $statement = $pdo->prepare($query);
+  $statement->bindValue(":email",$email);
+  $statement->execute();
+  $grupo = $statement->fetch(\PDO::FETCH_ASSOC);
+  
+  if ($grupo["copiloto"] == NULL) {
+    $query = "SELECT * FROM user WHERE EMAIL=:email"; 
+    $statement = $pdo->prepare($query);
+    $statement->bindValue(":email",$email);
+    $statement->execute();
+    $user = $statement->fetch(\PDO::FETCH_ASSOC);
+    if ($user["flag_copiloto"] == 0){
+      $query = "UPDATE grupo_randori SET copiloto = :email WHERE nome = :nome_grupo";
+      $statement = $pdo->prepare($query);
+      $statement->bindValue(":email",$email);
+      $statement->bindValue(":nome_grupo",$grupo["nome"]);      
+      $statement->execute();
+
+      $query = "UPDATE user SET flag_copiloto = 1 WHERE email = :email";
+      $statement = $pdo->prepare($query);
+      $statement->bindValue(":email",$email);      
+      $statement->execute();
+      return True;
+    }
+    return False;
+  }
+  else return False;
 }
 
 function getSemaforoProfessor($email, $pdo) {

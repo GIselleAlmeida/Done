@@ -7,6 +7,9 @@ if ( $_SESSION["email"] != null
   	
   	$email = $_SESSION["email"];
   	$pdo = new PDO($database_conexao, $database_username, $database_senha);
+  	$query = "UPDATE user SET randori_semaforo = 1 WHERE user.email = '".$email."'";
+	$statement = $pdo->prepare($query);
+	$statement->execute();
 
   	if (!getSemaforoProfessor($email, $pdo) || !getSemaforoGrupo($email, $pdo)) {
     	$html_string = file_get_contents("randori-home.html");
@@ -14,7 +17,7 @@ if ( $_SESSION["email"] != null
  	   echo $html; 		
  	}else {
  		//echo "aqui";
-    	header("location:randori.php");
+    	header("location:home.php");
 	}
 } else {
    header("location:login.php");
