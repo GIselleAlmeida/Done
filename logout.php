@@ -14,6 +14,15 @@ $query = "UPDATE user SET randori_semaforo = 0 WHERE user.email = '".$email."'";
 $statement = $pdo->prepare($query);
 $statement->execute();
 
+$query = "UPDATE user SET flag_piloto = 0 WHERE user.email = '".$email."'";
+$statement = $pdo->prepare($query);
+$statement->execute();
+
+$query = "UPDATE user SET flag_copiloto = 0 WHERE user.email = '".$email."'";
+$statement = $pdo->prepare($query);
+$statement->execute();
+
+
 $query = "SELECT * FROM grupo_randori WHERE grupo_randori.nome = (SELECT user.fk_grupo_randori FROM user WHERE EMAIL=:email)";
 $statement = $pdo->prepare($query);
 $statement->bindValue(":email",$email);
