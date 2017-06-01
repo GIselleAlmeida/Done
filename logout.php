@@ -14,6 +14,24 @@ $query = "UPDATE user SET randori_semaforo = 0 WHERE user.email = '".$email."'";
 $statement = $pdo->prepare($query);
 $statement->execute();
 
+$query = "SELECT * FROM grupo_randori WHERE grupo_randori.nome = (SELECT user.fk_grupo_randori FROM user WHERE EMAIL=:email)";
+$statement = $pdo->prepare($query);
+$statement->bindValue(":email",$email);
+$statement->execute();
+$grupo = $statement->fetch(\PDO::FETCH_ASSOC);
+
+if ($grupo["piloto"] == $email) {
+	$query = "UPDATE grupo_randori SET piloto = NULL WHERE grupo_randori.nome = '".$grupo["nome"]."'";
+	$statement = $pdo->prepare($query);
+	$statement->execute();
+}
+
+if ($grupo["copiloto"] == $email) {
+	$query = "UPDATE grupo_randori SET copiloto = NULL WHERE grupo_randori.nome = '".$grupo["nome"]."'";
+	$statement = $pdo->prepare($query);
+	$statement->execute();
+}
+
 session_unset($_SESSION["email"]);
 session_unset($_SESSION["username"]);
 session_destroy();

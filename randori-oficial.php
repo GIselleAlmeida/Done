@@ -36,12 +36,20 @@ if ( $_SESSION["email"] != null
       $str_cronometo = "$";
       $html = str_replace($str_cronometo, $duration, $html);
       
-      if($email == $grupo["piloto"])
+      if($email == $grupo["piloto"]) {
+        $field = "<fieldset disabled>";
+        $fieldaux = "</fieldset>";
+        $html = str_replace($field, "", $html);
+        $html = str_replace($fieldaux, "", $html);
         echo $html;
-      else 
-        
+      }
+      else {
+        $arquivo_default = "default_principal";
+        $html = str_replace($arquivo_default, "dft", $html); 
+        echo $html;
+      }
+    }
 		//echo "Ocorreu algum erro fale com o professor";
-	}
 } else {
    header("location:login.php");
 }

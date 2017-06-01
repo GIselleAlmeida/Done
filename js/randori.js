@@ -1,5 +1,6 @@
 var flagSendResquest = true;
 console.log("randori");
+
 function threadSendResquest() {
 	console.log("aqui");
 	if(flagSendResquest == true) {
