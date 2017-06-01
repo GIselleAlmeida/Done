@@ -4,7 +4,8 @@ $(document).ready(function(){
 	var editor = CodeMirror.fromTextArea(code, {
 		lineNumbers : true,
 		theme: "eclipse",
-		mode: "javascript"
+		mode: "text/x-java", //this is for JAVA
+  		matchBrackets: true
 
 	});
 });
