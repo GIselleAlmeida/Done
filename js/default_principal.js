@@ -17,18 +17,21 @@ function sendResposta() {
   setTimeout("sendResposta()", 1600);
   var text = editor.getValue();
   console.log(text);
-  var xhttp = new XMLHttpRequest();  
-  xhttp.onreadystatechange = function() {
-  if (this.readyState == 4 && this.status == 200) {
-        response = this.responseText;
-        console.log(response);
-     }
-	};
- xhttp.open("POST", "resposta.php", true);
- var data = new FormData();
- data.append("answer", text);
-  xhttp.send(data);
-  //  xhttp.open("GET", "randori-home.php", true);
-  //xhttp.send();
+  if (text != "") {
+    var xhttp = new XMLHttpRequest();  
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+          response = this.responseText;
+          console.log(response);
+      }
+	   };
+    xhttp.open("POST", "resposta.php", true);
+    var data = new FormData();
+    data.append("answer", text);
+    xhttp.send(data);
+    //  xhttp.open("GET", "randori-home.php", true);
+    //xhttp.send();
+  }
 }
 sendResposta();
+

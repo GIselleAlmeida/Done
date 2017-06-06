@@ -41,6 +41,11 @@ if ( $_SESSION["email"] != null
         $fieldaux = "</fieldset>";
         $html = str_replace($field, "", $html);
         $html = str_replace($fieldaux, "", $html);
+        $codemirror = '<textarea class="codemirror-textarea"></textarea>';
+
+
+        $newcodemirror = '<textarea class="codemirror-textarea">'.$grupo['resposta'].'</textarea>';
+        $html = str_replace($codemirror, $newcodemirror, $html);
         echo $html;
       }
       else {

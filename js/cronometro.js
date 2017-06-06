@@ -60,3 +60,28 @@ function cronometro () {
 		Horas.innerHTML = horas;
 	}
 }
+
+
+function updateCronometro() {
+  setTimeout("updateCronometro()", 1300);
+  var xhttp = new XMLHttpRequest();  
+  xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+        response = this.responseText;
+        console.log("cronometro");
+        console.log(response);
+        if(response.split(":").length >= 3){
+        	 window.location.href = "randori-oficial.php";
+        } else {
+        	aux = response.split(":");
+        	Minutos.innerHTML = aux[0];
+    		Segundos.innerHTML = ":"+aux[1];
+        }
+     }
+	};
+ xhttp.open("GET", "cronometro.php", true);
+ xhttp.send();
+  //  xhttp.open("GET", "randori-home.php", true);
+  //xhttp.send();
+}
+updateCronometro();

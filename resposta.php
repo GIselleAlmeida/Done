@@ -8,7 +8,7 @@ $email = $_SESSION["email"];
 //echo "teste";
 //echo var_dump($_POST);
 //echo $email;
-if ($_POST != null) {
+if ($_POST != null && $_POST["answer"]!= "") {
 	$answer = $_POST["answer"];
 	$pdo = new PDO($database_conexao, $database_username, $database_senha);
 	$query = "UPDATE grupo_randori SET resposta = :resposta WHERE nome = (SELECT user.fk_grupo_randori FROM user WHERE EMAIL=:email)";

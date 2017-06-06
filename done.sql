@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 01-Jun-2017 às 23:25
+-- Generation Time: 06-Jun-2017 às 15:16
 -- Versão do servidor: 10.1.21-MariaDB
 -- PHP Version: 7.0.17
 
@@ -23,6 +23,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `chat`
+--
+
+CREATE TABLE `chat` (
+  `contador` int(11) NOT NULL,
+  `fk_user` varchar(300) CHARACTER SET latin1 DEFAULT NULL,
+  `fk_grupo` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `msg` text NOT NULL,
+  `timestampMsg` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `experimento`
 --
 
@@ -30,7 +44,7 @@ CREATE TABLE `experimento` (
   `randori_semaforo` int(1) NOT NULL,
   `id_experimento` int(10) NOT NULL,
   `duration_randori` int(4) NOT NULL,
-  `questao` text CHARACTER SET latin1 NOT NULL
+  `questao` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -38,8 +52,7 @@ CREATE TABLE `experimento` (
 --
 
 INSERT INTO `experimento` (`randori_semaforo`, `id_experimento`, `duration_randori`, `questao`) VALUES
-(1, 1, 7, 'Elaborar um programa que efetue a leitura de três valores (A, B e C) e apresente como resultado final a soma dos quadrado da soma dos três valores lidos.'),
-(0, 2, 0, '');
+(1, 1, 7, 'Elaborar um programa que efetue a leitura de tr?s valores (A, B e C) e apresente como resultado final a soma dos quadrado da soma dos tr?s valores lidos.');
 
 -- --------------------------------------------------------
 
@@ -55,16 +68,6 @@ CREATE TABLE `grupo_randori` (
   `tempo` timestamp NULL DEFAULT NULL,
   `resposta` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `grupo_randori`
---
-
-INSERT INTO `grupo_randori` (`nome`, `randori_semaforo`, `piloto`, `copiloto`, `tempo`, `resposta`) VALUES
-('GrupoBonitos', 0, NULL, NULL, '2017-06-01 05:05:24', 'dasda\r\nsadsadas\r\nghjgjh'),
-('grupoteste', 0, NULL, NULL, '2017-06-01 05:05:24', NULL),
-('grupo_teste', 0, NULL, NULL, '2017-06-01 05:05:24', NULL),
-('teste1', 0, NULL, NULL, '2017-06-01 05:05:24', NULL);
 
 -- --------------------------------------------------------
 
@@ -84,21 +87,16 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `user`
---
-
-INSERT INTO `user` (`email`, `username`, `senha`, `fk_grupo_randori`, `posicao`, `randori_semaforo`, `flag_piloto`, `flag_copiloto`) VALUES
-('', '', '', NULL, NULL, 0, 0, 0),
-('aac.ufam@gmail.com', 'ufam', 'ufam1', 'grupo_teste', NULL, 0, 0, 0),
-('aac@icomp.ufam.edu.br', 'root', 'root1', 'GrupoBonitos', NULL, 0, 1, 0),
-('giselle.almeida.costa@gmail.com', 'Giselle', '36443038', 'GrupoBonitos', NULL, 0, 1, 1),
-('teste@teste.com', 'teste', 'teste123', 'grupo_teste', NULL, 0, 0, 0),
-('uma@uma', 'uma', 'uma', NULL, NULL, 1, 1, 0),
-('violao@gmail.com', 'violao', 'violao1', NULL, NULL, 0, 0, 0);
-
---
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `chat`
+--
+ALTER TABLE `chat`
+  ADD PRIMARY KEY (`contador`),
+  ADD KEY `fk_user` (`fk_user`),
+  ADD KEY `fk_grupo` (`fk_grupo`);
 
 --
 -- Indexes for table `experimento`
@@ -126,6 +124,11 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `chat`
+--
+ALTER TABLE `chat`
+  MODIFY `contador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+--
 -- AUTO_INCREMENT for table `experimento`
 --
 ALTER TABLE `experimento`
@@ -133,6 +136,13 @@ ALTER TABLE `experimento`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Limitadores para a tabela `chat`
+--
+ALTER TABLE `chat`
+  ADD CONSTRAINT `chat_ibfk_1` FOREIGN KEY (`fk_user`) REFERENCES `user` (`email`),
+  ADD CONSTRAINT `chat_ibfk_2` FOREIGN KEY (`fk_grupo`) REFERENCES `grupo_randori` (`nome`);
 
 --
 -- Limitadores para a tabela `grupo_randori`

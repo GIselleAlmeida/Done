@@ -4,28 +4,68 @@ session_start();
 
 if ( $_SESSION["email"] != null
     && $_SESSION["username"]!= null) {
-  	
-  	$email = $_SESSION["email"];
-  	$pdo = new PDO($database_conexao, $database_username, $database_senha);
-  	$query = "UPDATE user SET randori_semaforo = 1 WHERE user.email = '".$email."'";
-	$statement = $pdo->prepare($query);
-	$statement->execute();
 
-  	if (!getSemaforoProfessor($email, $pdo) || !getSemaforoGrupo($email, $pdo)) {
-    	$html_string = file_get_contents("randori-home.html");
-   	$html = str_replace('<a href="logout.php">logout</a>', '<a href="logout.php">logout ('.$_SESSION["username"].')</a>', $html_string);
- 	   echo $html; 		
- 	}else {
-      if(setPiloto($email, $pdo));
-      else if (setCopiloto($email, $pdo));
-    	
-      header("location:randori-oficial.php");
-	}
-} else {
-   header("location:login.php");
+	$email = $_SESSION["email"];
+	//$grupo = $_SESSION["grupo"];
+  	$pdo = new PDO($database_conexao, $database_username, $database_senha);
+
+	$query = "SELECT * FROM grupo_randori WHERE grupo_randori.nome = (SELECT user.fk_grupo_randori FROM user WHERE EMAIL=:email)";
+ 
+	$statement = $pdo->prepare($query);
+	$statement->bindValue(":email",$email);
+	$statement->execute();
+	$grupo = $statement->fetch(\PDO::FETCH_ASSOC);
+	$time = $grupo["tempo"];
+	
+	date_default_timezone_set('America/Manaus');
+	$dateDb = new DateTime($time);
+	//echo var_dump($dateDb);
+	//date_default_timezone_set('America/Manaus');
+	$dateAt = new DateTime(); 
+	$diff_time = $dateAt->diff($dateDb);
+	//echo $diff_time->i;
+	if ($diff_time->h > 0 || $diff_time->i >= 1){
+		if(removePiloto($email, $pdo)) echo "0:0:0";
+	   if(setPiloto($email, $pdo)) echo "0:0:0";
+	   else echo "0:00";
+
+	   clearAllPiloto($pdo, $grupo["nome"]);
+      //else if (setCopiloto($email, $pdo));
+   } else {
+   	$time = "";
+   	if ($diff_time->i < 10) $time = "0".$diff_time->i;
+   	else $time = $diff_time->i;
+   	if ($diff_time->s < 10) $time = $time.":0".$diff_time->s;  
+   	else $time = $time.":".$diff_time->s;
+   	echo $time;
+   }
 }
 
-/*function setPiloto($email, $pdo) {
+function clearAllPiloto($pdo, $grupo){
+
+	$query = "SELECT * FROM user WHERE flag_piloto = 0 AND user.fk_grupo_randori = :grupo";
+
+ 	$statement = $pdo->prepare($query);
+  	$statement->bindValue(":grupo",$grupo);
+  	$statement->execute();
+  //	$users = $statement->fetch(\PDO::FETCH_ASSOC);
+  	$flag = False;
+  	while ($user = $statement->fetch(\PDO::FETCH_ASSOC)) {
+  		if ($user != NULL)
+  			$flag = True;
+  	}
+
+  	if ($flag == False){
+  		$query = "UPDATE user SET flag_piloto = 0 WHERE user.fk_grupo_randori = :grupo";
+      $statement = $pdo->prepare($query);
+      $statement->bindValue(":grupo",$grupo);      
+      $statement->execute();
+  	}
+
+  	return $flag;
+}
+
+function removePiloto($email, $pdo) {
   $query = "SELECT * FROM grupo_randori WHERE grupo_randori.nome = (SELECT user.fk_grupo_randori FROM user WHERE EMAIL=:email)";
  
   $statement = $pdo->prepare($query);
@@ -33,29 +73,16 @@ if ( $_SESSION["email"] != null
   $statement->execute();
   $grupo = $statement->fetch(\PDO::FETCH_ASSOC);
   
-  if ($grupo["piloto"] == NULL) {
-    $query = "SELECT * FROM user WHERE EMAIL=:email"; 
-    $statement = $pdo->prepare($query);
-    $statement->bindValue(":email",$email);
-    $statement->execute();
-    $user = $statement->fetch(\PDO::FETCH_ASSOC);
-    if ($user["flag_piloto"] == 0){
-      $query = "UPDATE grupo_randori SET piloto = :email WHERE nome = :nome_grupo";
+  if ($grupo["piloto"] == $email) {
+      $query = "UPDATE grupo_randori SET piloto = NULL WHERE nome = :nome_grupo";
       $statement = $pdo->prepare($query);
-      $statement->bindValue(":email",$email);
-      $statement->bindValue(":nome_grupo",$grupo["nome"]);      
-      $statement->execute();
-
-      $query = "UPDATE user SET flag_piloto = 1 WHERE email = :email";
-      $statement = $pdo->prepare($query);
-      $statement->bindValue(":email",$email);      
-      $statement->execute();
-      return True;
-    }
-    return False;
+      $statement->bindValue(":nome_grupo",$grupo["nome"]);
+  		$statement->execute();
+  		return True;
   }
-  else return False;
-}*/
+  return False;
+}
+
 function setPiloto($email, $pdo) {
   $query = "SELECT * FROM grupo_randori WHERE grupo_randori.nome = (SELECT user.fk_grupo_randori FROM user WHERE EMAIL=:email)";
  
@@ -72,13 +99,14 @@ function setPiloto($email, $pdo) {
     $user = $statement->fetch(\PDO::FETCH_ASSOC);
     if ($user["flag_piloto"] == 0){
 
-      date_default_timezone_set('America/Manaus');
-      $date = date('Y-m-d H:i:s');
+    	date_default_timezone_set('America/Manaus');
+		$date = date('Y-m-d H:i:s');
 
-      $query = "UPDATE grupo_randori SET piloto = :email, tempo = :data  WHERE nome = :nome_grupo";
+      $query = "UPDATE grupo_randori SET piloto = :email, tempo = :data, resposta=:resposta  WHERE nome = :nome_grupo";
       $statement = $pdo->prepare($query);
       $statement->bindValue(":email",$email);
       $statement->bindValue(":nome_grupo",$grupo["nome"]);
+      $statement->bindValue(":resposta",$grupo["resposta"]);
       $statement->bindValue(":data",$date);      
       $statement->execute();
 
@@ -125,32 +153,12 @@ function setCopiloto($email, $pdo) {
   else return False;
 }
 
-function getSemaforoProfessor($email, $pdo) {
-  $query = "SELECT * FROM experimento WHERE id_experimento=1";
+function getDuration($pdo) {
+      $query = "SELECT * FROM experimento WHERE id_experimento=1";
  
-  $statement = $pdo->prepare($query);
-  $statement->execute();
-  $experimento = $statement->fetch(\PDO::FETCH_ASSOC);
-	if ($experimento["randori_semaforo"] == 1)
-    return True;
-  else return False;
+      $statement = $pdo->prepare($query);
+      $statement->execute();
+      $experimento = $statement->fetch(\PDO::FETCH_ASSOC);
+      $duration = $experimento["duration_randori"];
+      return $duration;
 }
-
-function getSemaforoGrupo($email, $pdo) {
-
-  $query = "SELECT * FROM user WHERE user.fk_grupo_randori = (SELECT user.fk_grupo_randori FROM user WHERE EMAIL=:email)";
- 
-  $statement = $pdo->prepare($query);
-  $statement->bindValue(":email",$email);
-  $statement->execute();
-  
-  //$user = $statement->fetch(\PDO::FETCH_ASSOC);
-  while ($user = $statement->fetch(\PDO::FETCH_ASSOC)) {
-    $_SESSION["grupo"] = $user["fk_grupo_randori"];
-    if ($user["randori_semaforo"] == 0)
-      return False;
-  }
-	return True;
-}
-
-?>

@@ -41,10 +41,15 @@ function setPiloto($email, $pdo) {
     $statement->execute();
     $user = $statement->fetch(\PDO::FETCH_ASSOC);
     if ($user["flag_piloto"] == 0){
-      $query = "UPDATE grupo_randori SET piloto = :email WHERE nome = :nome_grupo";
+
+      date_default_timezone_set('America/Manaus');
+      $date = date('Y-m-d H:i:s');
+
+      $query = "UPDATE grupo_randori SET piloto = :email, tempo = :data  WHERE nome = :nome_grupo";
       $statement = $pdo->prepare($query);
       $statement->bindValue(":email",$email);
-      $statement->bindValue(":nome_grupo",$grupo["nome"]);      
+      $statement->bindValue(":nome_grupo",$grupo["nome"]);
+      $statement->bindValue(":data",$date);      
       $statement->execute();
 
       $query = "UPDATE user SET flag_piloto = 1 WHERE email = :email";
