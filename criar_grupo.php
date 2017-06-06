@@ -42,7 +42,7 @@ if ($_SESSION["email"] != null
 function create_grupo ($database_conexao, $database_username, $database_senha) {
 	$nome_grupo = $_POST["grupo"];
 	$pdo = new PDO($database_conexao, $database_username, $database_senha);
-	$query = "INSERT INTO grupo_randori (nome) VALUES ('".$nome_grupo."');";
+	$query = "INSERT INTO grupo_randori (nome, randori_semaforo) VALUES ('".$nome_grupo."', 0);";
 	$statement = $pdo->prepare($query);
 
 	if($statement->execute()) {
