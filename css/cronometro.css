@@ -4,13 +4,13 @@
 }
 #contenedor{
 	margin: 10px auto;
-	width: 540px;
+	width: 510px;
 	height: 115px;
 }
 .reloj{
 	float: left;
-	font-size: 70px;
-	font-family: Courier,sans-serif;
+	font-size: 60px;
+	font-family: ;
 	color: #363431;
 }
 .boton{
