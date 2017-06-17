@@ -64,10 +64,10 @@ function setPiloto($email, $pdo) {
   $statement->execute();
   $grupo = $statement->fetch(\PDO::FETCH_ASSOC);
   
-  if ($grupo["piloto"] == NULL) {
-    $query = "SELECT * FROM user WHERE EMAIL=:email"; 
+  if ($grupo["piloto"] == NULL && $grupo["copiloto"] == NULL) {
+    $query = "SELECT * FROM user WHERE user.fk_grupo_randori = :grupo AND flag_piloto = 0 ORDER BY user.username ASC"; 
     $statement = $pdo->prepare($query);
-    $statement->bindValue(":email",$email);
+    $statement->bindValue(":grupo",$grupo["nome"]);
     $statement->execute();
     $user = $statement->fetch(\PDO::FETCH_ASSOC);
     if ($user["flag_piloto"] == 0){
@@ -77,14 +77,14 @@ function setPiloto($email, $pdo) {
 
       $query = "UPDATE grupo_randori SET piloto = :email, tempo = :data  WHERE nome = :nome_grupo";
       $statement = $pdo->prepare($query);
-      $statement->bindValue(":email",$email);
+      $statement->bindValue(":email",$user["email"]);
       $statement->bindValue(":nome_grupo",$grupo["nome"]);
       $statement->bindValue(":data",$date);      
       $statement->execute();
 
       $query = "UPDATE user SET flag_piloto = 1 WHERE email = :email";
       $statement = $pdo->prepare($query);
-      $statement->bindValue(":email",$email);      
+      $statement->bindValue(":email",$user["email"]);      
       $statement->execute();
       return True;
     }
@@ -102,21 +102,21 @@ function setCopiloto($email, $pdo) {
   $grupo = $statement->fetch(\PDO::FETCH_ASSOC);
   
   if ($grupo["copiloto"] == NULL) {
-    $query = "SELECT * FROM user WHERE EMAIL=:email"; 
+    $query = "SELECT * FROM user WHERE user.fk_grupo_randori = :grupo AND flag_piloto = 0 AND flag_copiloto = 0 ORDER BY user.username ASC"; 
     $statement = $pdo->prepare($query);
-    $statement->bindValue(":email",$email);
+    $statement->bindValue(":grupo",$grupo["nome"]);
     $statement->execute();
     $user = $statement->fetch(\PDO::FETCH_ASSOC);
     if ($user["flag_copiloto"] == 0){
       $query = "UPDATE grupo_randori SET copiloto = :email WHERE nome = :nome_grupo";
       $statement = $pdo->prepare($query);
-      $statement->bindValue(":email",$email);
+      $statement->bindValue(":email",$user["email"]);
       $statement->bindValue(":nome_grupo",$grupo["nome"]);      
       $statement->execute();
 
       $query = "UPDATE user SET flag_copiloto = 1 WHERE email = :email";
       $statement = $pdo->prepare($query);
-      $statement->bindValue(":email",$email);      
+      $statement->bindValue(":email",$user["email"]);      
       $statement->execute();
       return True;
     }
