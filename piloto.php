@@ -16,8 +16,25 @@ if ( $_SESSION["email"] != null
 	$statement->execute();
 	$grupo = $statement->fetch(\PDO::FETCH_ASSOC);
 	$piloto = $grupo["piloto"];
-	if($piloto != null) {
-		echo "0:".$piloto;
+	$copiloto = $grupo["copiloto"];
+
+	if($piloto != null && $copiloto !=null) {
+		//$strGrupo = "0:".$piloto.":".$copiloto;
+		
+		$query = "SELECT * FROM user WHERE fk_grupo_randori = :grupo";
+ 
+		$statement = $pdo->prepare($query);
+		$statement->bindValue(":grupo",$grupo["nome"]);
+		$statement->execute();
+		$strGrupo = "";
+		$pilotoUser = "";
+		$copilotoUser = "";
+		while ($user = $statement->fetch(\PDO::FETCH_ASSOC)) {
+			if ($user["email"] == $piloto) $pilotoUser = $user["username"];
+			else if ($user["email"] == $copiloto) $copilotoUser = $user["username"];		
+			else $strGrupo = $strGrupo.":".$user["username"];
+		}
+		echo "0:".$pilotoUser.":".$copilotoUser.":".$strGrupo;
 	} else echo "0";
 	
 }

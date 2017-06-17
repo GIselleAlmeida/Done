@@ -10,8 +10,31 @@ function updatePiloto() {
         if(response.split(":").length >= 2){
           var piloto = document.getElementById("pilototag");
           var aux = response.split(":");
-          piloto.innerHTML =  '<i class="fa fa-user fa-fw"></i>'+ aux[1] + '<span class="pull-right text-muted small"><em>Piloto</em> <i class="fa fa-android fa-fw"></i> </span>';
-         // clearTimeout(t);
+          var strGrupo = "";
+
+          /*<a href="#" class="list-group-item" id="pilototag">
+                <i class="fa fa-user fa-fw"></i> p1l0t0
+                <span class="pull-right text-muted small"><em>Piloto</em> <i class="fa fa-android fa-fw"></i> 
+                </span>
+            </a>
+            */
+
+          for (var i=1; i<aux.length; i++) {
+            if (aux[i] != "") {
+              if(i==1){
+                strGrupo =  strGrupo + '<a href="#" class="list-group-item" id="pilototag"><i class="fa fa-user fa-fw"></i>'+ aux[i] + '<span class="pull-right text-muted small"><em>Piloto</em> <i class="fa fa-android fa-fw"></i> </span></a>';
+              }
+              else if (i==2){
+                strGrupo =  strGrupo + '<a href="#" class="list-group-item" id="pilototag"><i class="fa fa-user fa-fw"></i>'+ aux[i] + '<span class="pull-right text-muted small"><em>Co-Piloto</em> <i class="fa fa-android fa-fw"></i> </span></a>';
+              }
+              else{
+              strGrupo =  strGrupo + '<a href="#" class="list-group-item" id="pilototag"><i class="fa fa-user fa-fw"></i>'+ aux[i] + '<span class="pull-right text-muted small"><em>Time</em> <i class="fa fa-android fa-fw"></i> </span></a>';
+              }
+            }
+          }
+
+          piloto.innerHTML = strGrupo;
+          // clearTimeout(t);
         }
      }
 	};
@@ -20,4 +43,4 @@ function updatePiloto() {
   //  xhttp.open("GET", "randori-home.php", true);
   //xhttp.send();
 }
-updatePiloto();
+updatePiloto(); 
