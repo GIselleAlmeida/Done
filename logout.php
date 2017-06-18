@@ -30,13 +30,13 @@ $statement->execute();
 $grupo = $statement->fetch(\PDO::FETCH_ASSOC);
 
 if ($grupo["piloto"] == $email) {
-	$query = "UPDATE grupo_randori SET piloto = NULL WHERE grupo_randori.nome = '".$grupo["nome"]."'";
+	$query = "UPDATE grupo_randori SET piloto = NULL, copiloto = NULL WHERE grupo_randori.nome = '".$grupo["nome"]."'";
 	$statement = $pdo->prepare($query);
 	$statement->execute();
 }
 
 if ($grupo["copiloto"] == $email) {
-	$query = "UPDATE grupo_randori SET copiloto = NULL WHERE grupo_randori.nome = '".$grupo["nome"]."'";
+	$query = "UPDATE grupo_randori SET piloto = NULL, copiloto = NULL WHERE grupo_randori.nome = '".$grupo["nome"]."'";
 	$statement = $pdo->prepare($query);
 	$statement->execute();
 }
