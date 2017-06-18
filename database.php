@@ -1,7 +1,7 @@
 <?php
 
 $database_username = "root";
-$database_senha = "root";
+$database_senha = "";
 $database_conexao = "mysql:host=localhost;dbname=done";
 
 /*class database {

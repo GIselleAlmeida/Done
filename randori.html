@@ -25,7 +25,15 @@
     <style>
     body {
         padding-top: 70px;
+
       }
+
+      #scroll {
+  width:350px;
+  height:140px;
+  background-color:white;
+  overflow:auto;
+}
 
     </style>
 
@@ -33,7 +41,7 @@
 
 </head>
 
-<body>
+<body >
 
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -143,17 +151,20 @@
 
                    
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                        <div class="panel-heading">                             
                             <i class="fa fa-users fa-fw"></i> Piloto Da Vez
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
+                            <div id="scroll">
                             <div class="list-group">
                                 <a href="#" class="list-group-item" id="pilototag">
                                     <i class="fa fa-user fa-fw"></i> p1l0t0
                                     <span class="pull-right text-muted small"><em>Piloto</em> <i class="fa fa-android fa-fw"></i> 
                                     </span>
-                                </a>                               
+                                </a>
+                            </div>
+                                                             
                             </div>
                             <!-- /.list-group -->
                            
