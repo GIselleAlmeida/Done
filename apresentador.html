@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <script src="js/jquery.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Done: Coding Dojo</title>
 
     <!-- Bootstrap Core CSS -->
@@ -69,11 +69,11 @@
                 <div class="login-page">
                 <div class="form">
 
-                 <form method="GET" action="professor-processa.php" class="login-form" id="professor">
+                 <form method="POST" action="kata-processa.php" class="login-form" id="professor">
                  
                     <h4>Apresentador  <span class="glyphicon glyphicon-user" aria-hidden="true"></span></h4>
 
-                    <input type="text" placeholder="email"/></br>                    
+                    <input type="text" placeholder="email" name="email"/></br>                    
                     </br>                 
                     <button type="submit" name="submit" id="submit" value="enviar" class="btn btn-primary btn-lg">Enviar</button>
                 </form>
