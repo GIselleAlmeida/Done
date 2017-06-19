@@ -18,7 +18,9 @@ function sendResposta() {
   xhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
         console.log(this.responseText);
+        var scroll=editor.getScrollInfo();
         editor.getDoc().setValue(this.responseText);
+        editor.scrollTo(scroll.left,scroll.top);
         
      }
 	};
