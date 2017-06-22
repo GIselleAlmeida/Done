@@ -24,7 +24,7 @@ if ( $_SESSION["email"] != null
 	$dateAt = new DateTime(); 
 	$diff_time = $dateAt->diff($dateDb);
 	//echo $diff_time->i;
-	if ($diff_time->h > 0 || $diff_time->i >= 1){
+	if ($diff_time->h > 0 || $diff_time->i >= 5){
 		if(removePiloto($email, $pdo)) echo "0:0:0";
 	   if(setPiloto($email, $pdo)) echo "0:0:0";
 	   else echo "0:00";
