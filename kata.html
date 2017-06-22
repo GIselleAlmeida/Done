@@ -35,6 +35,31 @@
   overflow:auto;
 }
 
+ #scroll2 {
+  width:430px;
+  height:140px;
+  background-color:white;
+  overflow:auto;
+}
+
+.scrollbar
+{
+    margin-left: 0px;
+    float: left;
+    height: 110px;
+    width: 850px;
+    background: white;
+    overflow-y: scroll;
+    margin-bottom: 0px;
+    
+
+}
+
+.chat-body{
+     margin: 0 auto -11px;
+     background: #F5F5F5;
+
+}
     </style>
 
  
@@ -117,7 +142,7 @@
                         <!-- /.panel-body -->
                         <div class="panel-footer">
                             <div class="input-group">
-                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="Mensagem" />
                                 <span class="input-group-btn">
                                     <button class="btn btn-warning btn-sm" id="btn-chat" onclick="btn_send()">
                                         Enviar
@@ -138,12 +163,15 @@
                 <div class="col-lg-4">
 
                       <div class="panel panel-default">
+                         <div id="scroll2">
                         <div class="panel-heading">
                             <i class="fa fa-bell fa-fw"></i> Enunciado da Questão
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <h4>questao</h4>
+                        </div>
+
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -174,9 +202,8 @@
                     <!-- /.panel -->
                     <!-- /.panel -->
 
-                     <button type="button" class="btn btn-raised btn-warning btn-block ripple-effect">
-                        <strong>Terminar Sessão </strong></button>
-               
+                     <a a href="logout.php"> <button type="button" class="btn btn-raised btn-warning btn-block ripple-effect">
+                        <strong>Terminar Sessão </strong></button></a>
                 </div>
                 <!-- /.col-lg-4 -->
             </div>

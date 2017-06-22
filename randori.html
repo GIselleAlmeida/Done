@@ -42,6 +42,25 @@
   overflow:auto;
 }
 
+.scrollbar
+{
+    margin-left: 0px;
+    float: left;
+    height: 110px;
+    width: 850px;
+    background: white;
+    overflow-y: scroll;
+    margin-bottom: 0px;
+    
+
+}
+
+.chat-body{
+     margin: 0 auto -11px;
+     background: #F5F5F5;
+
+}
+
     </style>
 
  
@@ -108,7 +127,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div class="scrollbar" id="style-default">                               
+                            <div class="scrollbar" id="style-10">                               
                             <ul class="chat" id="listChat">
                                 <li class="left clearfix">
                                     <div class="chat-body clearfix">
@@ -124,7 +143,7 @@
                         <!-- /.panel-body -->
                         <div class="panel-footer">
                             <div class="input-group">
-                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="mensagem" />
                                 <span class="input-group-btn">
                                     <button class="btn btn-warning btn-sm" id="btn-chat" onclick="btn_send()">
                                         Enviar
